@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[32]:
+# In[45]:
 
 
 import pandas as pd
@@ -9,8 +9,9 @@ import numpy as np
 import math
 import random
 
-def kmeans(k,epsilon):
-
+def kmeans(k,epsilon,limit):
+    print("Number of clusters =",k,"\nepsilon =",epsilon,"\nmaximum number of iterations =",limit)
+    print("")
     df = pd.read_csv('winequality-white.csv')
 
     # calculatin euclidean distance 
@@ -60,6 +61,8 @@ def kmeans(k,epsilon):
 
     #starts here
     while (status == False ):
+        if (iteration == limit):
+            break;
         iteration += 1
         newCentroids = []
 
@@ -88,8 +91,22 @@ def kmeans(k,epsilon):
             status = True
         else:
             centroids = newCentroids
-            
+
     print("Iterations :",iteration)      
     for x in range(len(clusters)):
         print("Cluster [",x,"] =",len(clusters[x])," ",str(round(((len(clusters[x]))/X.shape[0])*100,2))+"%")
+
+    print("")
+    for x in range(len(clusters)):
+        print("Cluster number:",x+1)
+        sse = 0
+        for data in clusters[x]:
+            sse += math.pow(euclidean(data,centroids[x]),2)
+        print("SSE = ",sse)
+
+
+
+
+
+
 
